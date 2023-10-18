@@ -10,7 +10,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/users")
@@ -21,9 +20,14 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> findAll() {
-        List<User> list = userService.findAll();
-        List<UserDTO> listUserDTO = list.stream().map(user -> new UserDTO(user)).collect(Collectors.toList());
+        List<UserDTO> listUserDTO = userService.findAll();
         return ResponseEntity.ok().body(listUserDTO);
+    }
+
+    @GetMapping(value = "/{id}")
+    private ResponseEntity<UserDTO> findById(@PathVariable String userId){
+        UserDTO userDTO = userService.findById(userId);
+        return ResponseEntity.ok().body(userDTO);
     }
 
     @PostMapping
@@ -33,4 +37,9 @@ public class UserController {
         return ResponseEntity.created(uri).build();
     }
 
+    @DeleteMapping(value = "/{userId}")
+    private ResponseEntity<Void> delete(@PathVariable String userId){
+        userService.delete(userId);
+        return ResponseEntity.noContent().build();
+    }
 }
