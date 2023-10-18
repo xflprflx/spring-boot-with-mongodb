@@ -4,6 +4,7 @@ import com.xflprflx.springwithmongo.dtos.UserDTO;
 import com.xflprflx.springwithmongo.models.User;
 import com.xflprflx.springwithmongo.repositories.UserRepository;
 import com.xflprflx.springwithmongo.services.exceptions.ResourceNotFoundException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,15 @@ public class UserService {
     public void delete(String id){
         findById(id);
         userRepository.deleteById(id);
+    }
+
+    public UserDTO update(String userId, UserDTO dto){
+        Optional<User> newObj = userRepository.findById(userId);
+        User user = newObj.orElseThrow(() -> new ResourceNotFoundException("User not found."));
+        BeanUtils.copyProperties(dto, user);
+        user.setId(userId);
+        userRepository.save(user);
+        return new UserDTO(user);
     }
 
     public User fromDto(UserDTO userDTO){
