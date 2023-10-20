@@ -1,5 +1,6 @@
 package com.xflprflx.springwithmongo.controllers;
 
+import com.xflprflx.springwithmongo.controllers.util.URL;
 import com.xflprflx.springwithmongo.dtos.PostDTO;
 import com.xflprflx.springwithmongo.dtos.PostDTO;
 import com.xflprflx.springwithmongo.models.Post;
@@ -24,5 +25,12 @@ public class PostController {
     private ResponseEntity<PostDTO> findById(@PathVariable String postId){
         PostDTO postDTO = postService.findById(postId);
         return ResponseEntity.ok().body(postDTO);
+    }
+
+    @GetMapping(value = "/titlesearch")
+    private ResponseEntity<List<PostDTO>> findByTitle(@RequestParam(value = "text", defaultValue = "") String text){
+        text = URL.decodeParam(text);
+        List<PostDTO> posts = postService.findByTitle(text);
+        return ResponseEntity.ok().body(posts);
     }
 }

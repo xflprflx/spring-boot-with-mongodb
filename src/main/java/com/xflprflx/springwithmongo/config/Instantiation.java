@@ -1,6 +1,7 @@
 package com.xflprflx.springwithmongo.config;
 
 import com.xflprflx.springwithmongo.dtos.AuthorDTO;
+import com.xflprflx.springwithmongo.dtos.ComentDTO;
 import com.xflprflx.springwithmongo.models.Post;
 import com.xflprflx.springwithmongo.models.User;
 import com.xflprflx.springwithmongo.repositories.PostRepository;
@@ -36,8 +37,14 @@ public class Instantiation implements CommandLineRunner {
         User anakin = new User(null, "Anakin", "bob@gmail.com");
         userRepository.saveAll(Arrays.asList(luke, yoda, anakin));
 
-        Post post1 = new Post(null, sdf.parse("21/03/2018"), "Bye", "May stackoverflow be with you.", new AuthorDTO(yoda));
+        Post post1 = new Post(null, sdf.parse("21/03/2018"), "Good bye", "May stackoverflow be with you.", new AuthorDTO(yoda));
         Post post2 = new Post(null, sdf.parse("21/03/2018"), "Do!", "Do. Or do not. There is no try.", new AuthorDTO(yoda));
+
+        ComentDTO c1 = new ComentDTO("Thank you!", sdf.parse("21/03/2018"), new AuthorDTO(luke));
+        ComentDTO c2 = new ComentDTO("Thank you master!", sdf.parse("21/03/2018"), new AuthorDTO(anakin));
+        ComentDTO c3 = new ComentDTO("You're crazy!", sdf.parse("21/03/2018"), new AuthorDTO(luke));
+        post1.getComents().addAll(Arrays.asList(c1, c2));
+        post2.getComents().addAll(Arrays.asList(c3));
         postRepository.saveAll(Arrays.asList(post1, post2));
 
         yoda.getPosts().addAll(Arrays.asList(post1, post2));
