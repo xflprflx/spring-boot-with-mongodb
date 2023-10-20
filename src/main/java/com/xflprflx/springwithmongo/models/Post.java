@@ -1,5 +1,6 @@
 package com.xflprflx.springwithmongo.models;
 
+import com.xflprflx.springwithmongo.dtos.AuthorDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,6 @@ public class Post implements Serializable {
     private Date date;
     private String title;
     private String body;
-    private User author;
+    private AuthorDTO author;
 
 }
