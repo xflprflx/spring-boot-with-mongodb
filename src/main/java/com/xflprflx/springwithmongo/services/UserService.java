@@ -29,6 +29,12 @@ public class UserService {
         return new UserDTO(user);
     }
 
+    public UserDTO findByIdWithPostDTO(String id){
+        Optional<User> obj = userRepository.findById(id);
+        User user = obj.orElseThrow(() -> new ResourceNotFoundException("User not found."));
+        return new UserDTO(user, user.getPosts());
+    }
+
     public User insert(UserDTO userDTO) {
         User user = fromDto(userDTO);
         return userRepository.save(user);

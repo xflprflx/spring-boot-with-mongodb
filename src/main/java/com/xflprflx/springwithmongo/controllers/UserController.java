@@ -1,6 +1,8 @@
 package com.xflprflx.springwithmongo.controllers;
 
+import com.xflprflx.springwithmongo.dtos.PostDTO;
 import com.xflprflx.springwithmongo.dtos.UserDTO;
+import com.xflprflx.springwithmongo.models.Post;
 import com.xflprflx.springwithmongo.models.User;
 import com.xflprflx.springwithmongo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +49,11 @@ public class UserController {
     private ResponseEntity<Void> delete(@PathVariable String userId){
         userService.delete(userId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(value = "/{userId}/posts")
+    private ResponseEntity<List<PostDTO>> findPosts(@PathVariable String userId){
+        UserDTO userDTO = userService.findByIdWithPostDTO(userId);
+        return ResponseEntity.ok().body(userDTO.getPosts());
     }
 }
